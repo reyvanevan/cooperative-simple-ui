@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Manual - Bermadani Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#4F46E5', 
+                        secondary: '#F8FAFC', 
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        /* Transition untuk Switcher */
+        .type-transition { transition: all 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-secondary text-slate-800 antialiased dark:bg-darkBg dark:text-slate-200 transition-colors duration-300">
+
+    <div id="sidebar-container"></div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-20 hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
+
+    <div id="main-content-wrapper" class="md:ml-64 min-h-screen flex flex-col transition-all duration-300">
+        
+        <header class="h-16 bg-white dark:bg-darkCard border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-6 sticky top-0 z-20 transition-colors duration-300">
+            <div class="flex items-center gap-3">
+                <button id="sidebar-toggle" class="md:hidden text-slate-500 hover:text-primary transition-colors">
+                    <i class='bx bx-menu text-2xl'></i>
+                </button>
+                <div>
+                    <h1 class="text-[14px] font-bold text-slate-800 dark:text-white">Catat Keuangan</h1>
+                    <p class="text-[10px] text-slate-500">Input pemasukan & pengeluaran operasional</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="theme-toggle" class="w-[34px] h-[34px] flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-all">
+                    <i id="theme-icon" class='bx bx-moon text-[20px]'></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 p-6 space-y-6 overflow-y-auto">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-2">
+                    <form action="#" class="bg-white dark:bg-darkCard rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 p-6">
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-8 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                            
+                            <label class="cursor-pointer group">
+                                <input type="radio" name="trx_type" value="expense" class="peer sr-only" checked onchange="toggleFormType('expense')">
+                                <div class="flex items-center justify-center gap-2 py-3 rounded-lg border border-transparent peer-checked:bg-white dark:peer-checked:bg-darkCard peer-checked:border-rose-200 dark:peer-checked:border-rose-900/50 peer-checked:shadow-sm transition-all">
+                                    <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 peer-checked:bg-rose-100 peer-checked:text-rose-600 flex items-center justify-center transition-colors">
+                                        <i class='bx bx-trending-down text-lg'></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest peer-checked:text-rose-600 transition-colors">Pengeluaran</p>
+                                        <p class="text-[12px] font-medium text-slate-600 dark:text-slate-300 peer-checked:font-bold">Operasional</p>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="cursor-pointer group">
+                                <input type="radio" name="trx_type" value="income" class="peer sr-only" onchange="toggleFormType('income')">
+                                <div class="flex items-center justify-center gap-2 py-3 rounded-lg border border-transparent peer-checked:bg-white dark:peer-checked:bg-darkCard peer-checked:border-emerald-200 dark:peer-checked:border-emerald-900/50 peer-checked:shadow-sm transition-all">
+                                    <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 peer-checked:bg-emerald-100 peer-checked:text-emerald-600 flex items-center justify-center transition-colors">
+                                        <i class='bx bx-trending-up text-lg'></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest peer-checked:text-emerald-600 transition-colors">Pemasukan</p>
+                                        <p class="text-[12px] font-medium text-slate-600 dark:text-slate-300 peer-checked:font-bold">Lain-lain</p>
+                                    </div>
+                                </div>
+                            </label>
+
+                        </div>
+
+                        <div class="space-y-5">
+                            
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">Nominal (Rp) <span class="text-rose-500">*</span></label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 font-bold">Rp</span>
+                                    <input type="number" id="amount-input" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl pl-10 pr-4 py-3 text-lg font-bold text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all placeholder-slate-300" placeholder="0">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">Kategori</label>
+                                    <select id="category-select" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2.5 text-[13px] outline-none focus:border-primary dark:text-white cursor-pointer">
+                                        <option>Biaya Listrik & Air</option>
+                                        <option>Beli Perlengkapan (ATK/Plastik)</option>
+                                        <option>Gaji Karyawan</option>
+                                        <option>Maintenance / Perbaikan</option>
+                                        <option>Lainnya</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">Tanggal Transaksi</label>
+                                    <input type="date" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2.5 text-[13px] outline-none focus:border-primary dark:text-white">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">Keterangan / Catatan</label>
+                                <textarea rows="2" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2.5 text-[13px] outline-none focus:border-primary dark:text-white placeholder-slate-400" placeholder="Contoh: Beli lampu baru untuk gudang..."></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1.5">Bukti Struk / Foto (Opsional)</label>
+                                <div class="flex items-center justify-center w-full">
+                                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:hover:border-slate-500 transition-colors">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <i class='bx bx-cloud-upload text-2xl text-slate-400 mb-2'></i>
+                                            <p class="text-xs text-slate-500 dark:text-slate-400"><span class="font-semibold">Klik upload</span> atau drag file</p>
+                                        </div>
+                                        <input id="dropzone-file" type="file" class="hidden" />
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
+                            <button type="submit" id="submit-btn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-rose-500/20 transition-all text-sm flex items-center justify-center gap-2">
+                                <i class='bx bx-save text-lg'></i> Simpan Pengeluaran
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="lg:col-span-1 space-y-6">
+                    
+                    <div class="bg-indigo-600 p-5 rounded-xl shadow-lg shadow-indigo-500/20 text-white relative overflow-hidden">
+                        <div class="relative z-10">
+                            <p class="text-[10px] font-bold text-indigo-200 uppercase tracking-widest mb-1">Saldo Kas Kecil (Petty Cash)</p>
+                            <h3 class="text-2xl font-bold">Rp 1.250.000</h3>
+                            <p class="text-[10px] text-indigo-100 mt-1">Untuk operasional harian</p>
+                        </div>
+                        <i class='bx bx-wallet-alt absolute -bottom-4 -right-4 text-6xl text-white opacity-10'></i>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden flex-1">
+                        <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                            <h3 class="text-[13px] font-bold text-slate-800 dark:text-white">Riwayat Input</h3>
+                            <a href="#" class="text-[10px] text-primary font-bold hover:underline">Lihat Semua</a>
+                        </div>
+                        <div class="divide-y divide-slate-100 dark:divide-slate-700">
+                            
+                            <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                                <div class="flex justify-between items-start mb-1">
+                                    <span class="text-[12px] font-bold text-slate-800 dark:text-white">Beli Token Listrik</span>
+                                    <span class="text-[10px] text-slate-400">Hari Ini</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-500 px-1.5 py-0.5 rounded">Operasional</span>
+                                    <span class="text-[12px] font-bold text-rose-500">- Rp 100.000</span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                                <div class="flex justify-between items-start mb-1">
+                                    <span class="text-[12px] font-bold text-slate-800 dark:text-white">Plastik Kresek</span>
+                                    <span class="text-[10px] text-slate-400">Kemarin</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-500 px-1.5 py-0.5 rounded">Perlengkapan</span>
+                                    <span class="text-[12px] font-bold text-rose-500">- Rp 25.000</span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                                <div class="flex justify-between items-start mb-1">
+                                    <span class="text-[12px] font-bold text-slate-800 dark:text-white">Topup Modal Tunai</span>
+                                    <span class="text-[10px] text-slate-400">28 Nov</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-500 px-1.5 py-0.5 rounded">Modal</span>
+                                    <span class="text-[12px] font-bold text-emerald-500">+ Rp 500.000</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../js/component-loader.js"></script>
+    <script>
+        // Load Sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadComponents('../components/sidebar.html', null, 'Transaksi'); // Bisa diset active statenya kalau mau
+            
+            // Re-attach sidebar toggle event for the custom header button
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    const sidebar = document.getElementById('main-sidebar');
+                    const overlay = document.getElementById('sidebar-overlay');
+                    if (sidebar) sidebar.classList.remove('-translate-x-full');
+                    if (overlay) {
+                        overlay.classList.remove('hidden');
+                        setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                    }
+                });
+            }
+        });
+
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark'); themeIcon.classList.replace('bx-moon', 'bx-sun');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            html.classList.toggle('dark');
+            if(html.classList.contains('dark')) {
+                themeIcon.classList.replace('bx-moon', 'bx-sun'); localStorage.setItem('color-theme', 'dark');
+            } else {
+                themeIcon.classList.replace('bx-sun', 'bx-moon'); localStorage.setItem('color-theme', 'light');
+            }
+        });
+
+        // TOGGLE FORM TYPE (Income vs Expense)
+        function toggleFormType(type) {
+            const input = document.getElementById('amount-input');
+            const btn = document.getElementById('submit-btn');
+            const select = document.getElementById('category-select');
+            
+            if (type === 'income') {
+                // Ubah Gaya jadi Hijau (Pemasukan)
+                input.classList.remove('focus:ring-rose-500/20', 'focus:border-rose-500');
+                input.classList.add('focus:ring-emerald-500/20', 'focus:border-emerald-500');
+                
+                btn.classList.remove('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
+                btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'shadow-emerald-500/20');
+                btn.innerHTML = "<i class='bx bx-save text-lg'></i> Simpan Pemasukan";
+
+                // Ubah Opsi Kategori (Simulasi)
+                select.innerHTML = `
+                    <option>Suntikan Modal</option>
+                    <option>Hibah / Donasi</option>
+                    <option>Pendapatan Lain-lain</option>
+                    <option>Retur Pembelian</option>
+                `;
+            } else {
+                // Balikin ke Merah (Pengeluaran)
+                input.classList.remove('focus:ring-emerald-500/20', 'focus:border-emerald-500');
+                input.classList.add('focus:ring-rose-500/20', 'focus:border-rose-500');
+                
+                btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'shadow-emerald-500/20');
+                btn.classList.add('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
+                btn.innerHTML = "<i class='bx bx-save text-lg'></i> Simpan Pengeluaran";
+
+                select.innerHTML = `
+                    <option>Biaya Listrik & Air</option>
+                    <option>Beli Perlengkapan (ATK/Plastik)</option>
+                    <option>Gaji Karyawan</option>
+                    <option>Maintenance / Perbaikan</option>
+                    <option>Lainnya</option>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

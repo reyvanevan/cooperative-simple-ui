@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Produk - Nexus Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#4F46E5', 
+                        secondary: '#F8FAFC', 
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="bg-secondary text-slate-800 antialiased dark:bg-darkBg dark:text-slate-200 transition-colors duration-300">
+
+    <!-- Sidebar -->
+    <div id="sidebar-container"></div>
+
+<div id="main-content-wrapper" class="md:ml-64 min-h-screen flex flex-col transition-all duration-300">
+    
+    <div id="navbar-container"></div>
+
+    <main class="flex-1 p-6 space-y-6 overflow-y-auto">
+        
+        <div class="flex border-b border-slate-200 dark:border-slate-700">
+            <button class="px-4 py-2 text-[13px] font-bold text-primary border-b-2 border-primary">
+                Pending Review <span class="ml-1 bg-indigo-100 text-indigo-700 px-1.5 rounded text-[10px]">3</span>
+            </button>
+            <button class="px-4 py-2 text-[13px] font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 transition-colors">
+                Disetujui
+            </button>
+            <button class="px-4 py-2 text-[13px] font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 transition-colors">
+                Ditolak
+            </button>
+        </div>
+
+        <div class="bg-white dark:bg-darkCard rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+                    <thead class="bg-slate-50 dark:bg-slate-800/50 text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 tracking-widest">
+                        <tr>
+                            <th class="px-5 py-3">Produk</th>
+                            <th class="px-5 py-3">Supplier</th>
+                            <th class="px-5 py-3">Harga Pengajuan</th>
+                            <th class="px-5 py-3">Margin/Fee</th>
+                            <th class="px-5 py-3">Tanggal</th>
+                            <th class="px-5 py-3 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700 text-[13px]">
+                        
+                        <tr class="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 transition-colors group cursor-pointer" onclick="window.location.href='product-submission-detail.html'">
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xl shrink-0">🍌</div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h6 class="font-bold text-slate-900 dark:text-white leading-none">Keripik Pisang Coklat</h6>
+                                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse" title="Baru"></span>
+                                        </div>
+                                        <p class="text-[10px] text-slate-400 mt-1">Snack • 50 Pcs</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">D</div>
+                                    <div>
+                                        <p class="font-medium text-slate-800 dark:text-white leading-none">Dani</p>
+                                        <p class="text-[10px] text-slate-400">Mahasiswa</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 font-medium text-slate-800 dark:text-white">
+                                Rp 15.000
+                            </td>
+                            <td class="px-5 py-4">
+                                <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">10%</span>
+                                <p class="text-[10px] text-slate-400">Rp 1.500/pcs</p>
+                            </td>
+                            <td class="px-5 py-4 text-slate-500">
+                                2 Jam yang lalu
+                            </td>
+                            <td class="px-5 py-4 text-right">
+                                <button class="text-indigo-600 hover:text-indigo-800 font-bold text-[12px] bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors">
+                                    Review
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group cursor-pointer" onclick="window.location.href='product-submission-detail.html'">
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xl shrink-0">🧶</div>
+                                    <div>
+                                        <h6 class="font-bold text-slate-900 dark:text-white leading-none">Gantungan Kunci Rajut</h6>
+                                        <p class="text-[10px] text-slate-400 mt-1">Souvenir • 20 Pcs</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold">S</div>
+                                    <div>
+                                        <p class="font-medium text-slate-800 dark:text-white leading-none">Sari</p>
+                                        <p class="text-[10px] text-slate-400">Dosen</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 font-medium text-slate-800 dark:text-white">
+                                Rp 25.000
+                            </td>
+                            <td class="px-5 py-4">
+                                <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">15%</span>
+                                <p class="text-[10px] text-slate-400">Rp 3.750/pcs</p>
+                            </td>
+                            <td class="px-5 py-4 text-slate-500">
+                                Kemarin
+                            </td>
+                            <td class="px-5 py-4 text-right">
+                                <button class="text-slate-500 hover:text-slate-700 font-bold text-[12px] bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors">
+                                    Review
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="px-5 py-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                <p class="text-[10px] text-slate-500">Menampilkan 2 dari 2 pengajuan</p>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    // --- COMPONENT LOADER ---
+    async function loadComponents() {
+        try {
+            const sidebarRes = await fetch('../components/sidebar.html');
+            const sidebarHtml = await sidebarRes.text();
+            document.getElementById('sidebar-container').innerHTML = sidebarHtml;
+
+            const navbarRes = await fetch('../components/navbar.html');
+            const navbarHtml = await navbarRes.text();
+            document.getElementById('navbar-container').innerHTML = navbarHtml;
+
+            // Initialize Logic AFTER components are loaded
+            initSidebar();
+            initTheme();
+
+            // Highlight "Review Produk" link
+            setTimeout(() => {
+                const links = document.querySelectorAll('nav a');
+                links.forEach(link => {
+                    if(link.innerText.includes('Review Produk')) {
+                        link.classList.add('bg-indigo-50', 'dark:bg-indigo-500/10', 'text-primary', 'dark:text-indigo-400');
+                        link.classList.remove('text-slate-500', 'dark:text-slate-400');
+                        link.querySelector('i').classList.remove('opacity-70');
+                        link.querySelector('i').classList.add('opacity-100');
+                        link.querySelector('span').classList.replace('font-medium', 'font-semibold');
+                    }
+                });
+            }, 50);
+        } catch (error) {
+            console.error("Error loading components:", error);
+        }
+    }
+
+    function initSidebar() {
+        const sidebar = document.getElementById('main-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const toggleBtn = document.getElementById('sidebar-toggle');
+        const closeBtn = document.getElementById('sidebar-close');
+        const collapseBtn = document.getElementById('sidebar-collapse-desktop');
+        const mainContent = document.getElementById('main-content-wrapper');
+        const sidebarTexts = document.querySelectorAll('.sidebar-text');
+        const collapseIcon = collapseBtn?.querySelector('i');
+
+        // Mobile Toggle
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+
+        // Desktop Collapse
+        function toggleCollapse() {
+            const isCollapsed = sidebar.classList.contains('w-20');
+            
+            if (isCollapsed) {
+                // Expand
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                mainContent.classList.remove('md:ml-20');
+                mainContent.classList.add('md:ml-64');
+                
+                // Show Text Elements
+                sidebarTexts.forEach(el => {
+                    el.classList.remove('hidden');
+                    setTimeout(() => el.classList.remove('opacity-0', 'w-0'), 50);
+                });
+
+                collapseIcon?.classList.remove('rotate-180');
+                localStorage.setItem('sidebar-collapsed', 'false');
+            } else {
+                // Collapse
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-20');
+                mainContent.classList.remove('md:ml-64');
+                mainContent.classList.add('md:ml-20');
+                
+                // Hide Text Elements
+                sidebarTexts.forEach(el => {
+                    el.classList.add('opacity-0', 'w-0');
+                    setTimeout(() => el.classList.add('hidden'), 300); // Wait for transition
+                });
+
+                collapseIcon?.classList.add('rotate-180');
+                localStorage.setItem('sidebar-collapsed', 'true');
+            }
+        }
+
+        // Init State
+        const savedState = localStorage.getItem('sidebar-collapsed');
+        if (savedState === 'true') {
+             sidebar.classList.remove('w-64');
+             sidebar.classList.add('w-20');
+             mainContent.classList.remove('md:ml-64');
+             mainContent.classList.add('md:ml-20');
+             
+             sidebarTexts.forEach(el => {
+                el.classList.add('opacity-0', 'w-0', 'hidden');
+             });
+             
+             collapseIcon?.classList.add('rotate-180');
+        }
+
+        if(toggleBtn) toggleBtn.addEventListener('click', openSidebar);
+        if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+        if(overlay) overlay.addEventListener('click', closeSidebar);
+        if(collapseBtn) collapseBtn.addEventListener('click', toggleCollapse);
+    }
+
+    function initTheme() {
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark'); 
+            if(themeIcon) themeIcon.classList.replace('bx-moon', 'bx-sun');
+        }
+
+        if(themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', function() {
+                html.classList.toggle('dark');
+                if(html.classList.contains('dark')) {
+                    themeIcon.classList.replace('bx-moon', 'bx-sun'); localStorage.setItem('color-theme', 'dark');
+                } else {
+                    themeIcon.classList.replace('bx-sun', 'bx-moon'); localStorage.setItem('color-theme', 'light');
+                }
+            });
+        }
+    }
+
+    loadComponents();
+</script>
+</body>
+</html>
