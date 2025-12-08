@@ -44,5 +44,24 @@ Buka browser di: `http://localhost:8000`
 Untuk melihat tampilan dashboard tanpa menjalankan server, buka file berikut langsung di browser:
 `dashboard-demo.html`
 
+### Metode 3: Alternatif Lain (Windows/Mac/Linux)
+
+#### A. VS Code Live Server (Paling Mudah)
+1. Install ekstensi **Live Server** di VS Code.
+2. Buka file `index.html`.
+3. Klik tombol **Go Live** di pojok kanan bawah VS Code.
+
+#### B. Node.js (http-server)
+Jika sudah install Node.js:
+```bash
+npx http-server
+```
+
+#### C. PHP Built-in Server
+Jika menggunakan XAMPP/Laragon:
+```bash
+php -S localhost:8000
+```
+
 ## 🤝 Kontribusi
 Silakan fork repository ini dan buat pull request untuk fitur baru atau perbaikan bug.
