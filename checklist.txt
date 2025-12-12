@@ -27,3 +27,106 @@
 ✅ pos.html (ada)
 ✅ transaction-detail.html (view single transaction detail)
 ✅ transaction-history.html (list transactions with filters)
+
+=== MEMBER MANAGEMENT SYSTEM ===
+
+[✅] members-list.html (admin view all members)
+    - stats cards: total members, active, total simpanan (POKOK+WAJIB+SUKARELA), avg points
+    - search & filters: status, tier, unit kerja, date range
+    - table: nomor anggota, nama, email, unit kerja, status, tier, TOTAL simpanan (breakdown: P+W+S), points, actions
+    - pagination, export, bulk actions
+
+[✅] member-detail.html (admin view single member)
+    - header: nomor anggota, name, status, tier badges
+    - personal info card: email, phone, gender, address, unit kerja
+    - simpanan breakdown card: 
+      * Simpanan POKOK: Rp XXX (one-time, non-withdrawable)
+      * Simpanan WAJIB: Rp XXX (monthly mandatory, exit-withdrawable only)
+      * Simpanan SUKARELA: Rp XXX (flexible deposit/withdraw anytime)
+      * TOTAL SIMPANAN: Rp XXX (sum of all 3 types)
+      * Buttons: [Tambah Pokok] [Tambah Wajib] [Tambah Sukarela] [Tarik Sukarela]
+    - loyalty card: tier, points, total spent, progress bar
+    - tabs: transaction history, ALL simpanan history (semua 3 jenis), activity log
+
+[✅] member-create.html (admin add new member)
+    - step 1: link to user account (select existing or create new)
+    - step 2: personal info (name, email, phone, gender, address, unit kerja)
+    - step 3: initial simpanan setup (REQUIRED for all 3 types):
+      * Simpanan POKOK: amount (mandatory, default 100k, one-time only)
+      * Simpanan WAJIB: amount (mandatory, default 50k, monthly commitment)
+      * Simpanan SUKARELA: amount (optional, default 0, anytime flexible)
+      * Upload bukti pembayaran (per type or combined)
+    - step 4: review & submit (show BREAKDOWN of all 3 simpanan + total)
+
+[✅] member-edit.html (admin edit member)
+    - personal info form only (simpanan management use dedicated page)
+    - cannot edit: userId, nomorAnggota, joinDate, any simpanan balances
+    - can edit: personal info, status, isMemberKoperasi
+
+[✅] simpanan-management.html (admin manage ALL 3 simpanan types)
+    - Section POKOK:
+      * Current balance: Rp XXX (lifetime total)
+      * [Add Simpanan Pokok] button (rare, usually once only)
+      * History table: all pokok transactions
+    - Section WAJIB:
+      * Current balance: Rp XXX (accumulated monthly)
+      * [Add Monthly Wajib] button (regular monthly)
+      * Payment tracker: last payment date, next due date
+      * History table: all wajib monthly payments
+    - Section SUKARELA:
+      * Current balance: Rp XXX (flexible balance)
+      * [Add Sukarela] button + [Withdraw Sukarela] button
+      * History table: both setor & tarik sukarela transactions
+    - COMBINED SUMMARY: Total across all 3 types + grand total
+
+[ ] member-search-kasir.html (kasir quick search for POS)
+    - large search input with autocomplete
+    - barcode scanner support
+    - member cards showing: nomor anggota, nama, TOTAL simpanan (P+W+S), points, tier
+    - selected member info (sticky at top) with full simpanan breakdown
+    - integration with POS checkout
+
+[✅] member-dashboard.html (member portal)
+    - welcome section with nomor anggota
+    - simpanan breakdown card:
+      * Simpanan POKOK: Rp XXX (lifetime, non-withdrawable)
+      * Simpanan WAJIB: Rp XXX (monthly accumulation)  
+      * Simpanan SUKARELA: Rp XXX [Tarik] button
+      * TOTAL SIMPANAN: Rp XXX (highlighted, sum of all)
+    - loyalty & rewards card (tier, points, progress)
+    - recent transactions table (last 10 purchases)
+    - recent simpanan activities (all 3 types mixed, last 5)
+    - profile management buttons
+
+[✅] member-profile.html (member edit own profile)
+    - personal info form (phone, address editable)
+    - change password section
+    - notification settings
+
+[✅] member-transactions.html (member view own purchase history)
+    - full transaction history (shopping transactions only, NOT simpanan)
+    - filters: date range, amount, payment method
+    - search by transaction ID
+    - export to PDF
+
+[✅] member-simpanan.html (member view ALL simpanan history)
+    - 3 separate tabs:
+      * TAB POKOK: history simpanan pokok (usually 1 entry only)
+      * TAB WAJIB: history monthly wajib payments with due tracking
+      * TAB SUKARELA: history setor + tarik sukarela (both directions)
+    - filters per tab: date range, amount range
+    - SUKARELA tab has [Request Withdrawal] button
+    - download statement: per type or combined all 3
+
+=== NOTES ===
+- 3 DISTINCT SIMPANAN TYPES (each member has separate balance for each):
+  * POKOK = mandatory one-time deposit (100k-500k), NEVER withdrawable, lifetime
+  * WAJIB = mandatory monthly deposit (50k/month), withdrawable ONLY when exit koperasi
+  * SUKARELA = voluntary anytime deposit, can withdraw freely anytime, any amount
+- TOTAL SIMPANAN = POKOK balance + WAJIB balance + SUKARELA balance  
+- Each type tracked separately in database & UI
+- Tier system based on POINTS (not simpanan): BRONZE (0-999), SILVER (1000-2999), GOLD (3000-5999), PLATINUM (6000+)
+- Nomor anggota format: MBR-YYYYMMDD-XXX
+- Points earned from purchases: Rp 1000 spent = 1 point
+- Points: Rp 1000 = 1 point (customizable)
+

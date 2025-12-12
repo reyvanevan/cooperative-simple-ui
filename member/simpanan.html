@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simpanan Saya - Bermadani Member</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        primary: '#0F52BA',
+                        secondary: '#F8FAFC',
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        /* Tab Transition */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-secondary text-slate-800 antialiased dark:bg-darkBg dark:text-slate-200 transition-colors duration-300">
+
+    <div id="sidebar-container"></div>
+
+    <div class="lg:ml-[240px] min-h-screen flex flex-col transition-all duration-300">
+
+        <div id="header-container"></div>
+
+        <main class="flex-1 p-6 lg:p-8 space-y-6 overflow-y-auto">
+
+            <div
+                class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="relative z-10">
+                    <p class="text-blue-100 text-xs font-bold uppercase tracking-widest mb-1">Total Saldo Simpanan</p>
+                    <h2 class="text-3xl font-bold">Rp 1.250.000</h2>
+                    <p class="text-blue-200 text-xs mt-2 flex items-center gap-1"><i class='bx bxs-info-circle'></i>
+                        Akumulasi dari semua jenis simpanan</p>
+                </div>
+                <div class="relative z-10 flex gap-3">
+                    <button
+                        class="bg-white/20 hover:bg-white/30 border border-white/30 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2"
+                        onclick="alert('Fitur download statement dalam pengembangan')">
+                        <i class='bx bx-download'></i> Statement
+                    </button>
+                </div>
+                <div
+                    class="absolute right-0 top-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none">
+                </div>
+            </div>
+
+            <div class="border-b border-slate-200 dark:border-slate-700">
+                <div class="flex gap-6 overflow-x-auto no-scrollbar">
+                    <button onclick="switchTab('pokok')" id="btn-pokok"
+                        class="pb-3 text-sm font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white border-b-2 border-transparent hover:border-slate-300 transition-colors whitespace-nowrap">
+                        Simpanan Pokok
+                    </button>
+                    <button onclick="switchTab('wajib')" id="btn-wajib"
+                        class="pb-3 text-sm font-bold text-primary border-b-2 border-primary transition-colors whitespace-nowrap">
+                        Simpanan Wajib
+                    </button>
+                    <button onclick="switchTab('sukarela')" id="btn-sukarela"
+                        class="pb-3 text-sm font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white border-b-2 border-transparent hover:border-slate-300 transition-colors whitespace-nowrap">
+                        Simpanan Sukarela
+                    </button>
+                </div>
+            </div>
+
+            <div id="tab-wajib" class="tab-content active">
+
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <select
+                            class="bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2 text-sm outline-none cursor-pointer">
+                            <option>Tahun 2023</option>
+                            <option>Tahun 2022</option>
+                        </select>
+                    </div>
+                    <div
+                        class="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/30 rounded-lg flex items-center gap-2 w-full sm:w-auto">
+                        <i class='bx bx-error-circle text-amber-600 dark:text-amber-400 text-lg'></i>
+                        <div>
+                            <p class="text-[10px] text-amber-800 dark:text-amber-200 font-bold uppercase tracking-wide">
+                                Tagihan Aktif</p>
+                            <p class="text-xs font-semibold text-amber-900 dark:text-white">Bulan Desember belum dibayar
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+                    <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+                        <thead
+                            class="bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100 dark:border-slate-700">
+                            <tr>
+                                <th class="px-6 py-4">Bulan / Periode</th>
+                                <th class="px-6 py-4">Tanggal Bayar</th>
+                                <th class="px-6 py-4">Metode</th>
+                                <th class="px-6 py-4 text-right">Nominal</th>
+                                <th class="px-6 py-4 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                            <tr class="bg-amber-50/30 dark:bg-amber-900/10">
+                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-white">Desember 2023</td>
+                                <td class="px-6 py-4 text-slate-400">-</td>
+                                <td class="px-6 py-4 text-slate-400">-</td>
+                                <td class="px-6 py-4 text-right font-bold text-slate-800 dark:text-white">Rp 50.000</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span
+                                        class="bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400 px-2 py-1 rounded text-[10px] font-bold uppercase">Belum
+                                        Bayar</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-slate-800 dark:text-white">November 2023</td>
+                                <td class="px-6 py-4 text-slate-500">01 Nov 2023</td>
+                                <td class="px-6 py-4 text-slate-500">Potong Gaji</td>
+                                <td class="px-6 py-4 text-right font-bold text-slate-800 dark:text-white">Rp 50.000</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span
+                                        class="bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 px-2 py-1 rounded text-[10px] font-bold uppercase">Lunas</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-slate-800 dark:text-white">Oktober 2023</td>
+                                <td class="px-6 py-4 text-slate-500">01 Okt 2023</td>
+                                <td class="px-6 py-4 text-slate-500">Transfer Bank</td>
+                                <td class="px-6 py-4 text-right font-bold text-slate-800 dark:text-white">Rp 50.000</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span
+                                        class="bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400 px-2 py-1 rounded text-[10px] font-bold uppercase">Lunas</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-sukarela" class="tab-content">
+
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                            <i class='bx bx-wallet'></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide font-semibold">
+                                Saldo Sukarela</p>
+                            <h4 class="font-bold text-lg text-slate-900 dark:text-white">Rp 500.000</h4>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 w-full md:w-auto">
+                        <button data-modal-target="withdraw-modal" data-modal-toggle="withdraw-modal"
+                            class="flex-1 md:flex-none bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-white font-bold py-2 px-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2">
+                            <i class='bx bx-money-withdraw'></i> Tarik Dana
+                        </button>
+                        <button
+                            class="flex-1 md:flex-none bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2 shadow-md shadow-emerald-500/20">
+                            <i class='bx bx-plus-circle'></i> Setor / Top Up
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+                            <thead
+                                class="bg-slate-50 dark:bg-slate-800/50 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100 dark:border-slate-700">
+                                <tr>
+                                    <th class="px-6 py-4">Tanggal & Waktu</th>
+                                    <th class="px-6 py-4">Keterangan</th>
+                                    <th class="px-6 py-4 text-center">Tipe</th>
+                                    <th class="px-6 py-4 text-right">Nominal</th>
+                                    <th class="px-6 py-4 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <span class="block font-medium text-slate-800 dark:text-white">29 Nov
+                                            2023</span>
+                                        <span class="text-[10px] text-slate-500">14:30 WIB</span>
+                                    </td>
+                                    <td class="px-6 py-4">Pembayaran Belanja Minimarket</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span
+                                            class="text-rose-500 bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Keluar</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right font-bold text-rose-500">-Rp 45.000</td>
+                                    <td class="px-6 py-4 text-center"><i
+                                            class='bx bxs-check-circle text-emerald-500 text-lg'></i></td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <span class="block font-medium text-slate-800 dark:text-white">15 Nov
+                                            2023</span>
+                                        <span class="text-[10px] text-slate-500">09:00 WIB</span>
+                                    </td>
+                                    <td class="px-6 py-4">Setoran Tunai via Admin</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span
+                                            class="text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Masuk</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right font-bold text-emerald-500">+Rp 200.000</td>
+                                    <td class="px-6 py-4 text-center"><i
+                                            class='bx bxs-check-circle text-emerald-500 text-lg'></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-pokok" class="tab-content">
+                <div
+                    class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-8 text-center">
+                    <div
+                        class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 text-primary rounded-2xl flex items-center justify-center text-4xl mx-auto mb-4">
+                        <i class='bx bxs-lock-alt'></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Simpanan Pokok Terbayar</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">
+                        Simpanan pokok adalah syarat keanggotaan dan tidak dapat ditarik selama masih menjadi anggota
+                        aktif.
+                    </p>
+                    <div
+                        class="inline-block bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl px-8 py-4">
+                        <p class="text-xs text-slate-400 uppercase tracking-widest mb-1">Nominal Disetor</p>
+                        <h2 class="text-3xl font-bold text-primary">Rp 500.000</h2>
+                        <p class="text-[10px] text-emerald-500 font-bold mt-2 flex items-center justify-center gap-1">
+                            <i class='bx bxs-check-circle'></i> Lunas pada 01 Nov 2023
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="withdraw-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full backdrop-blur-sm bg-slate-900/50">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <div
+                class="relative bg-white rounded-2xl shadow-2xl dark:bg-darkCard border border-slate-100 dark:border-slate-700">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-slate-600">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+                        Tarik Simpanan Sukarela
+                    </h3>
+                    <button type="button"
+                        class="text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-slate-600 dark:hover:text-white"
+                        data-modal-hide="withdraw-modal">
+                        <i class='bx bx-x text-2xl'></i>
+                    </button>
+                </div>
+                <form class="p-4 md:p-5">
+                    <div class="mb-4">
+                        <label class="block mb-2 text-xs font-bold text-slate-500 uppercase tracking-wide">Jumlah
+                            Penarikan</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">Rp</span>
+                            <input type="number"
+                                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white text-lg font-bold rounded-lg focus:ring-primary focus:border-primary block pl-8 p-2.5 outline-none"
+                                placeholder="0">
+                        </div>
+                        <p class="mt-1 text-[10px] text-slate-400">Saldo tersedia: Rp 500.000</p>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block mb-2 text-xs font-bold text-slate-500 uppercase tracking-wide">Tujuan
+                            Transfer</label>
+                        <select
+                            class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 outline-none">
+                            <option>BCA - 8820xxx (Utama)</option>
+                            <option>Gopay - 0821xxx</option>
+                        </select>
+                    </div>
+                    <button type="submit"
+                        class="w-full text-white bg-primary hover:bg-blue-700 font-bold rounded-lg text-sm px-5 py-3 text-center transition-colors">
+                        Ajukan Penarikan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- COMPONENT LOADER ---
+        async function loadComponents() {
+            try {
+                // Load Sidebar
+                const sidebarRes = await fetch('../components/member-sidebar.html');
+                const sidebarHtml = await sidebarRes.text();
+                document.getElementById('sidebar-container').innerHTML = sidebarHtml;
+
+                // Load Header
+                const headerRes = await fetch('../components/member-header.html');
+                const headerHtml = await headerRes.text();
+                document.getElementById('header-container').innerHTML = headerHtml;
+
+                // Initialize Logic
+                initMemberLayout('simpanan', 'Simpanan Anggota');
+
+            } catch (error) {
+                console.error("Error loading components:", error);
+            }
+        }
+
+        function initMemberLayout(activePage, pageTitle) {
+            // 1. Set Title
+            const titleEl = document.getElementById('header-title');
+            if (titleEl) titleEl.innerText = pageTitle;
+
+            // 2. Set Active Sidebar Link
+            const sidebarLinks = document.querySelectorAll('#member-sidebar nav a');
+            sidebarLinks.forEach(link => {
+                if (link.dataset.page === activePage) {
+                    link.classList.add('bg-blue-50', 'dark:bg-blue-900/20', 'text-primary', 'dark:text-blue-300');
+                    link.classList.remove('text-slate-500', 'dark:text-slate-400', 'hover:bg-slate-50', 'dark:hover:bg-slate-800', 'hover:text-slate-900', 'dark:hover:text-white');
+
+                    const icon = link.querySelector('i');
+                    if (icon) {
+                        // Ensure icon style if needed, but the class list replacement handles color
+                    }
+
+                    const text = link.querySelector('span');
+                    if (text) {
+                        text.classList.remove('font-medium');
+                        text.classList.add('font-bold');
+                    }
+                }
+            });
+
+            // 3. Init Theme & Mobile Menu (Logic from components)
+            initThemeAndMenu();
+        }
+
+        function initThemeAndMenu() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const html = document.documentElement;
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('member-sidebar');
+
+            // Mobile Menu
+            if (mobileMenuBtn && sidebar) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('hidden');
+                    sidebar.classList.toggle('flex');
+                    sidebar.classList.toggle('fixed');
+                    sidebar.classList.toggle('inset-0');
+                    sidebar.classList.toggle('z-40');
+                    sidebar.classList.toggle('w-full');
+                });
+            }
+
+            // Theme Toggle
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+                if (themeIcon) themeIcon.classList.replace('bx-moon', 'bx-sun');
+            }
+
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', function () {
+                    html.classList.toggle('dark');
+                    if (html.classList.contains('dark')) {
+                        if (themeIcon) themeIcon.classList.replace('bx-moon', 'bx-sun');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        if (themeIcon) themeIcon.classList.replace('bx-sun', 'bx-moon');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                });
+            }
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            // 1. Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // 2. Show selected content
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            // 3. Update Buttons Style
+            const buttons = ['pokok', 'wajib', 'sukarela'];
+            buttons.forEach(btn => {
+                const el = document.getElementById('btn-' + btn);
+                if (btn === tabName) {
+                    el.className = "pb-3 text-sm font-bold text-primary border-b-2 border-primary transition-colors whitespace-nowrap";
+                } else {
+                    el.className = "pb-3 text-sm font-bold text-slate-500 hover:text-slate-800 dark:hover:text-white border-b-2 border-transparent hover:border-slate-300 transition-colors whitespace-nowrap";
+                }
+            });
+        }
+
+        // Modal Logic (Simple Toggle)
+        const modal = document.getElementById('withdraw-modal');
+        const openBtns = document.querySelectorAll('[data-modal-target="withdraw-modal"]');
+        const closeBtns = document.querySelectorAll('[data-modal-hide="withdraw-modal"]');
+
+        openBtns.forEach(btn => btn.addEventListener('click', () => modal.classList.remove('hidden')));
+        closeBtns.forEach(btn => btn.addEventListener('click', () => modal.classList.add('hidden')));
+
+        // Outside click close
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.add('hidden');
+        });
+
+        // Set Default Tab
+        switchTab('wajib'); // Default view is Simpanan Wajib
+
+        // Start Loading
+        loadComponents();
+    </script>
+
+</body>
+
+</html>
