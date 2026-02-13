@@ -6,6 +6,7 @@ function initSidebar() {
     const collapseBtn = document.getElementById('sidebar-collapse-desktop');
     const mainContent = document.getElementById('main-content-wrapper');
     const sidebarTexts = document.querySelectorAll('.sidebar-text');
+    const bottomBar = document.getElementById('pos-bottom-bar');
     const collapseIcon = collapseBtn?.querySelector('i');
 
     // Mobile Toggle
@@ -31,6 +32,10 @@ function initSidebar() {
             sidebar.classList.add('w-64');
             mainContent.classList.remove('md:ml-20');
             mainContent.classList.add('md:ml-64');
+            if (bottomBar) {
+                bottomBar.classList.remove('md:ml-20');
+                bottomBar.classList.add('md:ml-64');
+            }
 
             // Show Text Elements
             sidebarTexts.forEach(el => {
@@ -46,6 +51,10 @@ function initSidebar() {
             sidebar.classList.add('w-20');
             mainContent.classList.remove('md:ml-64');
             mainContent.classList.add('md:ml-20');
+            if (bottomBar) {
+                bottomBar.classList.remove('md:ml-64');
+                bottomBar.classList.add('md:ml-20');
+            }
 
             // Hide Text Elements
             sidebarTexts.forEach(el => {
@@ -65,6 +74,10 @@ function initSidebar() {
         sidebar.classList.add('w-20');
         mainContent.classList.remove('md:ml-64');
         mainContent.classList.add('md:ml-20');
+        if (bottomBar) {
+            bottomBar.classList.remove('md:ml-64');
+            bottomBar.classList.add('md:ml-20');
+        }
 
         sidebarTexts.forEach(el => {
             el.classList.add('opacity-0', 'w-0', 'hidden');

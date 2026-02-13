@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Saldo - Bermadani Member</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        primary: '#0F52BA', 
+                        secondary: '#F8FAFC', 
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        
+        /* PIN Input Styles */
+        .pin-input::-webkit-outer-spin-button,
+        .pin-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body class="bg-secondary text-slate-800 antialiased dark:bg-darkBg dark:text-slate-200 transition-colors duration-300">
+
+<aside class="fixed inset-y-0 left-0 bg-white dark:bg-darkCard w-[240px] border-r border-slate-200 dark:border-slate-700 hidden lg:flex flex-col z-30 transition-all duration-300">
+    <div class="h-20 flex items-center px-6 border-b border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+                <i class='bx bxs-cube-alt text-xl'></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold text-slate-900 dark:text-white leading-none">Bermadani</h1>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mt-0.5">Member Area</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+        <p class="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Menu Utama</p>
+        
+        <a href="member-dashboard.html" class="flex items-center px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all group">
+            <i class='bx bxs-dashboard text-lg mr-3'></i> <span class="text-sm font-medium">Dashboard</span>
+        </a>
+
+        <a href="member-transactions.html" class="flex items-center px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all group">
+            <i class='bx bx-shopping-bag text-lg mr-3'></i> <span class="text-sm font-medium">Riwayat Belanja</span>
+        </a>
+
+        <a href="member-simpanan.html" class="flex items-center px-4 py-3 bg-blue-50 dark:bg-blue-900/20 text-primary dark:text-blue-300 rounded-xl transition-all group">
+            <i class='bx bx-wallet text-lg mr-3'></i> <span class="text-sm font-bold">Simpanan & Transfer</span>
+        </a>
+
+        <p class="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 mt-6">Akun</p>
+        <a href="member-profile.html" class="flex items-center px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all group">
+            <i class='bx bx-user-circle text-lg mr-3'></i> <span class="text-sm font-medium">Profil</span>
+        </a>
+        <a href="landing.html" class="flex items-center px-4 py-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-all group mt-auto">
+            <i class='bx bx-log-out text-lg mr-3'></i> <span class="text-sm font-medium">Keluar</span>
+        </a>
+    </nav>
+</aside>
+
+<div class="lg:ml-[240px] min-h-screen flex flex-col transition-all duration-300">
+    
+    <header class="h-16 bg-white dark:bg-darkCard border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-6 sticky top-0 z-20">
+        <div class="flex items-center gap-4">
+            <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+                <i class='bx bx-menu text-2xl'></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <a href="member-simpanan.html" class="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <i class='bx bx-arrow-back text-2xl text-slate-500'></i>
+                </a>
+                <h1 class="text-lg font-bold text-slate-800 dark:text-white">Transfer Sesama Anggota</h1>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="theme-toggle" class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                <i id="theme-icon" class='bx bx-moon text-xl'></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 p-6 lg:p-8 space-y-6 overflow-y-auto">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-6">
+                
+                <div class="bg-gradient-to-r from-primary to-blue-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+                    <div class="absolute right-0 top-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                    <div class="relative z-10 flex justify-between items-start">
+                        <div>
+                            <p class="text-blue-100 text-xs font-bold uppercase tracking-widest mb-1">Sumber Dana</p>
+                            <h3 class="text-lg font-semibold flex items-center gap-2">
+                                Simpanan Sukarela
+                            </h3>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-blue-100 text-xs mb-1">Saldo Aktif</p>
+                            <div class="flex items-center justify-end gap-2">
+                                <h2 class="text-2xl font-bold" id="saldo-text">Rp 500.000</h2>
+                                <button onclick="toggleSaldo()" class="text-blue-200 hover:text-white transition-colors">
+                                    <i class='bx bx-show text-xl' id="eye-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-darkCard p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+                    <form onsubmit="event.preventDefault(); openPinModal();">
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Tujuan Transfer</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                    <i class='bx bx-user'></i>
+                                </span>
+                                <input type="text" id="dest-input" onkeyup="checkMember()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white font-mono placeholder:font-sans" placeholder="Masukkan Nomor Anggota (Cth: MBR-2023...)">
+                                <div id="loading-check" class="hidden absolute inset-y-0 right-3 flex items-center">
+                                    <i class='bx bx-loader-alt bx-spin text-primary'></i>
+                                </div>
+                            </div>
+                            
+                            <div id="member-found" class="hidden mt-3 p-3 bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800 rounded-lg flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-800 flex items-center justify-center text-emerald-600 dark:text-emerald-300 font-bold text-xs">
+                                    RW
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Penerima</p>
+                                    <p class="text-sm font-bold text-slate-800 dark:text-white">Rina Wulandari (Manajemen)</p>
+                                </div>
+                                <i class='bx bxs-check-circle text-emerald-500 text-xl ml-auto'></i>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nominal Transfer</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 font-bold">Rp</span>
+                                <input type="number" id="amount-input" class="w-full bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-600 rounded-xl pl-12 pr-4 py-3 text-lg font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white" placeholder="0">
+                            </div>
+                            
+                            <div class="flex gap-2 mt-3 overflow-x-auto no-scrollbar">
+                                <button type="button" onclick="setAmount(50000)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium rounded-lg border border-transparent hover:border-blue-200 transition-all">50.000</button>
+                                <button type="button" onclick="setAmount(100000)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium rounded-lg border border-transparent hover:border-blue-200 transition-all">100.000</button>
+                                <button type="button" onclick="setAmount(200000)" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium rounded-lg border border-transparent hover:border-blue-200 transition-all">200.000</button>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-2">*Minimal transfer Rp 10.000</p>
+                        </div>
+
+                        <div class="mb-8">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Catatan (Opsional)</label>
+                            <input type="text" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all dark:text-white" placeholder="Bayar utang makan siang...">
+                        </div>
+
+                        <button type="submit" class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                            Lanjut Konfirmasi <i class='bx bx-right-arrow-alt text-xl'></i>
+                        </button>
+
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="space-y-6">
+                
+                <div class="bg-blue-50 dark:bg-blue-900/10 p-5 rounded-2xl border border-blue-100 dark:border-blue-800/30">
+                    <h4 class="text-sm font-bold text-blue-800 dark:text-blue-300 mb-3 flex items-center gap-2">
+                        <i class='bx bxs-info-circle'></i> Info Transaksi
+                    </h4>
+                    <ul class="space-y-2 text-xs text-blue-700/80 dark:text-blue-400/80">
+                        <li class="flex items-start gap-2">
+                            <i class='bx bxs-check-circle mt-0.5'></i>
+                            <span>Biaya Admin <b>GRATIS</b> untuk sesama anggota.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class='bx bxs-check-circle mt-0.5'></i>
+                            <span>Limit maksimal Rp 5.000.000 per transaksi.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class='bx bxs-check-circle mt-0.5'></i>
+                            <span>Pastikan nomor anggota tujuan benar.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-5">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4">Terakhir Ditransfer</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer" onclick="quickFill('MBR-2023002')">
+                            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-bold text-xs">
+                                JS
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-slate-800 dark:text-white">Joko Susilo</p>
+                                <p class="text-[10px] text-slate-500">MBR-2023002</p>
+                            </div>
+                            <i class='bx bx-chevron-right text-slate-400'></i>
+                        </div>
+                        <div class="flex items-center gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer" onclick="quickFill('MBR-2023088')">
+                            <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-bold text-xs">
+                                AN
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-slate-800 dark:text-white">Anya Nurhaliza</p>
+                                <p class="text-[10px] text-slate-500">MBR-2023088</p>
+                            </div>
+                            <i class='bx bx-chevron-right text-slate-400'></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<div id="pin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+    <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl shadow-2xl p-6 border border-slate-100 dark:border-slate-700 text-center">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Konfirmasi Transfer</h3>
+        <p class="text-xs text-slate-500 mb-6">Masukkan 6 digit PIN keamanan Anda untuk memproses transfer.</p>
+        
+        <div class="flex justify-center gap-2 mb-6">
+            <input type="password" maxlength="1" class="pin-input w-10 h-12 text-center text-xl font-bold border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-slate-50 dark:bg-slate-800 dark:text-white transition-all">
+            <input type="password" maxlength="1" class="pin-input w-10 h-12 text-center text-xl font-bold border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-slate-50 dark:bg-slate-800 dark:text-white transition-all">
+            <input type="password" maxlength="1" class="pin-input w-10 h-12 text-center text-xl font-bold border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-slate-50 dark:bg-slate-800 dark:text-white transition-all">
+            <input type="password" maxlength="1" class="pin-input w-10 h-12 text-center text-xl font-bold border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-slate-50 dark:bg-slate-800 dark:text-white transition-all">
+            <input type="password" maxlength="1" class="pin-input w-10 h-12 text-center text-xl font-bold border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-slate-50 dark:bg-slate-800 dark:text-white transition-all">
+            <input type="password" maxlength="1" class="pin-input w-10 h-12 text-center text-xl font-bold border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none bg-slate-50 dark:bg-slate-800 dark:text-white transition-all">
+        </div>
+
+        <div class="flex gap-3">
+            <button onclick="closePinModal()" class="flex-1 py-2.5 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-sm hover:bg-slate-50 dark:hover:bg-slate-800">Batal</button>
+            <button onclick="processTransfer()" class="flex-1 py-2.5 bg-primary hover:bg-blue-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-blue-500/20">Konfirmasi</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Logic 1: Dark Mode & Sidebar (Standard)
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const sidebar = document.querySelector('aside');
+    
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden'); sidebar.classList.toggle('flex');
+            sidebar.classList.toggle('fixed'); sidebar.classList.toggle('inset-0');
+            sidebar.classList.toggle('z-40'); sidebar.classList.toggle('w-full');
+        });
+    }
+
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        html.classList.add('dark'); themeIcon.classList.replace('bx-moon', 'bx-sun');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+        html.classList.toggle('dark');
+        if(html.classList.contains('dark')) {
+            themeIcon.classList.replace('bx-moon', 'bx-sun'); localStorage.setItem('color-theme', 'dark');
+        } else {
+            themeIcon.classList.replace('bx-sun', 'bx-moon'); localStorage.setItem('color-theme', 'light');
+        }
+    });
+
+    // Logic 2: Saldo Toggle
+    let isSaldoVisible = true;
+    function toggleSaldo() {
+        const saldoEl = document.getElementById('saldo-text');
+        const eyeIcon = document.getElementById('eye-icon');
+        if(isSaldoVisible) {
+            saldoEl.innerText = 'Rp ••••••••';
+            eyeIcon.classList.replace('bx-show', 'bx-hide');
+        } else {
+            saldoEl.innerText = 'Rp 500.000';
+            eyeIcon.classList.replace('bx-hide', 'bx-show');
+        }
+        isSaldoVisible = !isSaldoVisible;
+    }
+
+    // Logic 3: Quick Amount
+    function setAmount(val) {
+        document.getElementById('amount-input').value = val;
+    }
+
+    // Logic 4: Member Check Simulation
+    let timeout = null;
+    function checkMember() {
+        clearTimeout(timeout);
+        const input = document.getElementById('dest-input');
+        const loading = document.getElementById('loading-check');
+        const found = document.getElementById('member-found');
+        
+        found.classList.add('hidden'); // Reset
+        
+        if(input.value.length > 5) {
+            loading.classList.remove('hidden');
+            timeout = setTimeout(() => {
+                loading.classList.add('hidden');
+                // Simulate Found
+                found.classList.remove('hidden');
+                found.classList.add('flex');
+            }, 800);
+        }
+    }
+
+    function quickFill(id) {
+        document.getElementById('dest-input').value = id;
+        checkMember();
+    }
+
+    // Logic 5: PIN Modal
+    const modal = document.getElementById('pin-modal');
+    const pinInputs = document.querySelectorAll('.pin-input');
+
+    function openPinModal() {
+        modal.classList.remove('hidden');
+        pinInputs[0].focus();
+    }
+    function closePinModal() {
+        modal.classList.add('hidden');
+        pinInputs.forEach(i => i.value = ''); // Clear PIN
+    }
+    function processTransfer() {
+        alert('Transfer Berhasil Dikirim!');
+        closePinModal();
+        window.location.href = 'member-simpanan.html'; // Balik ke halaman simpanan
+    }
+
+    // Auto-focus next PIN input
+    pinInputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            if(e.target.value.length === 1 && index < pinInputs.length - 1) {
+                pinInputs[index + 1].focus();
+            }
+        });
+        input.addEventListener('keydown', (e) => {
+            if(e.key === 'Backspace' && e.target.value.length === 0 && index > 0) {
+                pinInputs[index - 1].focus();
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Pembayaran - Nexus Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: '#4F46E5', 
+                        secondary: '#F8FAFC', 
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-secondary text-slate-800 antialiased dark:bg-darkBg dark:text-slate-200 transition-colors duration-300">
+
+<aside class="fixed inset-y-0 left-0 bg-white dark:bg-darkCard w-[180px] border-r border-slate-200 dark:border-slate-700 hidden md:flex flex-col z-30 transition-all duration-300">
+    <div class="h-16 flex items-center px-4 border-b border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-2">
+            <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                <i class='bx bxs-cube-alt text-xs'></i>
+            </div>
+            <span class="text-base font-bold tracking-tight text-slate-900 dark:text-white leading-none mt-0.5">Nexus</span>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-2.5 py-3 space-y-0.5 overflow-y-auto">
+        <p class="px-2 text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 mt-1 opacity-80">Main</p>
+        <a href="dashboard.html" class="flex items-center px-2 py-1.5 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white rounded-md transition-all group">
+            <i class='bx bxs-dashboard text-sm mr-2 opacity-70 group-hover:opacity-100 transition-opacity'></i> <span class="text-xs font-medium">Dashboard</span>
+        </a>
+        <a href="members-list.html" class="flex items-center px-2 py-1.5 bg-indigo-50 dark:bg-indigo-500/10 text-primary dark:text-indigo-400 rounded-md transition-all group">
+            <i class='bx bx-group text-sm mr-2 opacity-100'></i> <span class="text-xs font-semibold">Anggota</span>
+        </a>
+    </nav>
+</aside>
+
+<div class="md:ml-[180px] min-h-screen flex flex-col transition-all duration-300">
+    
+    <header class="h-16 bg-white dark:bg-darkCard border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-6 sticky top-0 z-20 transition-colors duration-300">
+        <div class="flex items-center gap-4">
+            <a href="simpanan-management.html" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+                <i class='bx bx-arrow-back text-xl'></i>
+            </a>
+            <div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
+            <div>
+                <h1 class="text-[14px] font-bold text-slate-800 dark:text-white">Input Pembayaran Simpanan</h1>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="theme-toggle" class="w-[34px] h-[34px] flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md transition-all">
+                <i id="theme-icon" class='bx bx-moon text-[20px]'></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 p-6 space-y-6 overflow-y-auto">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="lg:col-span-2 space-y-6">
+                
+                <div class="bg-white dark:bg-darkCard rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                    <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">
+                        Pilih Anggota
+                    </label>
+                    <div class="relative">
+                        <select id="member-select" onchange="loadMemberData()"
+                                class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors cursor-pointer appearance-none">
+                            <option value="">-- Cari Nama / No. Anggota --</option>
+                            <option value="1">Aditya Pratama - MBR-001 (Teknik Informatika)</option>
+                            <option value="2">Budi Santoso - MBR-002 (Teknik Mesin)</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-500">
+                            <i class='bx bx-chevron-down text-xl'></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bills-section" class="hidden fade-in bg-white dark:bg-darkCard rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                            <i class='bx bx-list-check text-lg text-primary'></i> Tagihan Belum Lunas
+                        </h3>
+                        <span class="text-[10px] bg-rose-50 text-rose-600 dark:bg-rose-900/20 px-2 py-1 rounded font-bold uppercase border border-rose-100 dark:border-rose-900">
+                            3 Tunggakan
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 dark:bg-slate-800/50 text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">
+                                <tr>
+                                    <th class="px-6 py-3 w-10">
+                                        <input type="checkbox" onchange="toggleAllBills(this)" class="rounded border-gray-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer">
+                                    </th>
+                                    <th class="px-6 py-3">Bulan</th>
+                                    <th class="px-6 py-3">Jenis</th>
+                                    <th class="px-6 py-3 text-right">Tagihan</th>
+                                    <th class="px-6 py-3 text-right">Sisa Bayar</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700 text-[13px]">
+                                <tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <input type="checkbox" value="50000" class="bill-checkbox rounded border-gray-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer" onchange="calculateTotal()">
+                                    </td>
+                                    <td class="px-6 py-4 font-medium text-slate-800 dark:text-white">Desember 2023</td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-100 dark:border-blue-800">S. WAJIB</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right text-slate-500">Rp 50.000</td>
+                                    <td class="px-6 py-4 text-right font-bold text-rose-500">Rp 50.000</td>
+                                </tr>
+                                <tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <input type="checkbox" value="50000" class="bill-checkbox rounded border-gray-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer" onchange="calculateTotal()">
+                                    </td>
+                                    <td class="px-6 py-4 font-medium text-slate-800 dark:text-white">Januari 2024</td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-100 dark:border-blue-800">S. WAJIB</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right text-slate-500">Rp 50.000</td>
+                                    <td class="px-6 py-4 text-right font-bold text-rose-500">Rp 50.000</td>
+                                </tr>
+                                <tr class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <input type="checkbox" value="100000" class="bill-checkbox rounded border-gray-300 text-primary focus:ring-primary w-4 h-4 cursor-pointer" onchange="calculateTotal()">
+                                    </td>
+                                    <td class="px-6 py-4 font-medium text-slate-800 dark:text-white">Januari 2024</td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-800">S. SUKARELA</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right text-slate-500">Rp 100.000</td>
+                                    <td class="px-6 py-4 text-right font-bold text-rose-500">Rp 100.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="payment-details" class="hidden fade-in bg-white dark:bg-darkCard rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                    <h3 class="text-sm font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+                        <i class='bx bx-money text-lg text-primary'></i> Detail Transaksi
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <div class="md:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">Metode Pembayaran</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="cursor-pointer group">
+                                    <input type="radio" name="payment_method" value="CASH" class="peer sr-only" checked onchange="toggleTransferFields('CASH')">
+                                    <div class="px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center hover:bg-slate-50 dark:hover:bg-slate-800 peer-checked:border-primary peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 peer-checked:text-primary dark:peer-checked:text-indigo-400 transition-all">
+                                        <i class='bx bx-money text-xl mb-1 block'></i>
+                                        <span class="text-xs font-bold">Tunai</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer group">
+                                    <input type="radio" name="payment_method" value="TRANSFER" class="peer sr-only" onchange="toggleTransferFields('TRANSFER')">
+                                    <div class="px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center hover:bg-slate-50 dark:hover:bg-slate-800 peer-checked:border-primary peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 peer-checked:text-primary dark:peer-checked:text-indigo-400 transition-all">
+                                        <i class='bx bx-transfer text-xl mb-1 block'></i>
+                                        <span class="text-xs font-bold">Transfer</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer group">
+                                    <input type="radio" name="payment_method" value="AUTO_DEBIT" class="peer sr-only" onchange="toggleTransferFields('AUTO_DEBIT')">
+                                    <div class="px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-center hover:bg-slate-50 dark:hover:bg-slate-800 peer-checked:border-primary peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 peer-checked:text-primary dark:peer-checked:text-indigo-400 transition-all">
+                                        <i class='bx bx-credit-card text-xl mb-1 block'></i>
+                                        <span class="text-xs font-bold">Auto Debit</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Tanggal Bayar</label>
+                            <input type="date" class="w-full px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors">
+                        </div>
+
+                        <div id="transfer-fields" class="hidden md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-indigo-50/50 dark:bg-indigo-900/10 rounded-xl border border-indigo-100 dark:border-indigo-800/30">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Nomor Referensi (TRF)</label>
+                                <input type="text" placeholder="Contoh: TRF-12345678"
+                                       class="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Bukti Transfer</label>
+                                <input type="file" class="block w-full text-[11px] text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-primary file:text-white hover:file:bg-indigo-700 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Catatan (Opsional)</label>
+                            <textarea rows="2" placeholder="Keterangan tambahan..."
+                                      class="w-full px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-800 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors resize-none"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:col-span-1">
+                <div class="sticky top-6 space-y-6">
+                    
+                    <div class="bg-primary text-white rounded-xl shadow-xl shadow-indigo-500/20 p-6 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-bl-full -mr-10 -mt-10 pointer-events-none"></div>
+                        
+                        <h3 class="text-indigo-100 text-[10px] font-bold uppercase tracking-widest mb-1">Total Pembayaran</h3>
+                        <div class="flex items-baseline gap-1 mb-6">
+                            <span class="text-lg opacity-80">Rp</span>
+                            <span id="total-display" class="text-4xl font-extrabold tracking-tight">0</span>
+                        </div>
+
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between text-xs text-indigo-100 border-b border-indigo-400/30 pb-2">
+                                <span>Item Dipilih</span>
+                                <span class="font-bold" id="items-count">0 Tagihan</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-indigo-100">
+                                <span>Admin Fee</span>
+                                <span class="font-bold">Rp 0</span>
+                            </div>
+                        </div>
+
+                        <button onclick="processPayment()" id="btn-pay" disabled
+                                class="w-full py-3.5 bg-white text-primary font-bold rounded-xl shadow-sm hover:bg-indigo-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group">
+                            <span>Proses Pembayaran</span>
+                            <i class='bx bx-right-arrow-alt text-xl group-hover:translate-x-1 transition-transform'></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-amber-50 dark:bg-amber-500/10 border border-amber-100 dark:border-amber-500/20 rounded-xl p-4 flex gap-3">
+                        <i class='bx bx-info-circle text-amber-500 text-xl shrink-0 mt-0.5'></i>
+                        <div>
+                            <h4 class="text-xs font-bold text-amber-800 dark:text-amber-400 mb-1">Informasi</h4>
+                            <p class="text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
+                                Pastikan data tagihan yang dipilih sudah sesuai. Kuitansi akan terbit otomatis setelah pembayaran sukses.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+
+<div id="success-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 fade-in">
+    <div class="bg-white dark:bg-darkCard rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center transform transition-all border border-slate-100 dark:border-slate-700">
+        
+        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600 dark:text-emerald-400">
+            <i class='bx bx-check text-4xl'></i>
+        </div>
+        
+        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Pembayaran Berhasil!</h3>
+        <p class="text-sm text-slate-500 mb-6">
+            Transaksi telah tercatat dengan nomor kuitansi <br>
+            <span class="font-mono font-bold text-slate-800 dark:text-white">#RCP-20231205-001</span>
+        </p>
+
+        <div class="space-y-3">
+            <a href="payment-receipt.html" target="_blank" class="block w-full py-3 bg-primary hover:bg-indigo-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors">
+                <i class='bx bx-printer'></i> Cetak Kuitansi
+            </a>
+            <button onclick="location.reload()" class="w-full py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                Input Pembayaran Lain
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Dark Mode Logic
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        html.classList.add('dark'); themeIcon.classList.replace('bx-moon', 'bx-sun');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+        html.classList.toggle('dark');
+        if(html.classList.contains('dark')) {
+            themeIcon.classList.replace('bx-moon', 'bx-sun'); localStorage.setItem('color-theme', 'dark');
+        } else {
+            themeIcon.classList.replace('bx-sun', 'bx-moon'); localStorage.setItem('color-theme', 'light');
+        }
+    });
+
+    // 2. Form Interaction Logic
+    
+    // Show Bills when Member Selected
+    function loadMemberData() {
+        const select = document.getElementById('member-select');
+        const billsSection = document.getElementById('bills-section');
+        
+        if (select.value) {
+            billsSection.classList.remove('hidden');
+        } else {
+            billsSection.classList.add('hidden');
+            document.getElementById('payment-details').classList.add('hidden');
+            resetSummary();
+        }
+    }
+
+    // Toggle All Checkboxes
+    function toggleAllBills(source) {
+        const checkboxes = document.querySelectorAll('.bill-checkbox');
+        checkboxes.forEach(cb => {
+            cb.checked = source.checked;
+        });
+        calculateTotal();
+    }
+
+    // Calculate Summary
+    function calculateTotal() {
+        const checkboxes = document.querySelectorAll('.bill-checkbox:checked');
+        let total = 0;
+        
+        checkboxes.forEach(cb => {
+            total += parseInt(cb.value);
+        });
+
+        // Format Rupiah
+        document.getElementById('total-display').innerText = new Intl.NumberFormat('id-ID').format(total);
+        document.getElementById('items-count').innerText = checkboxes.length + " Tagihan";
+
+        // Show/Hide Payment Details & Enable Button
+        const paymentDetails = document.getElementById('payment-details');
+        const payBtn = document.getElementById('btn-pay');
+
+        if (total > 0) {
+            paymentDetails.classList.remove('hidden');
+            payBtn.removeAttribute('disabled');
+        } else {
+            paymentDetails.classList.add('hidden');
+            payBtn.setAttribute('disabled', 'true');
+        }
+    }
+
+    // Toggle Transfer Fields
+    function toggleTransferFields(method) {
+        const fields = document.getElementById('transfer-fields');
+        if (method === 'TRANSFER') {
+            fields.classList.remove('hidden');
+            fields.classList.add('grid');
+        } else {
+            fields.classList.add('hidden');
+            fields.classList.remove('grid');
+        }
+    }
+
+    // Reset Summary Helper
+    function resetSummary() {
+        document.getElementById('total-display').innerText = '0';
+        document.getElementById('items-count').innerText = '0 Tagihan';
+        document.getElementById('btn-pay').setAttribute('disabled', 'true');
+        
+        // Uncheck all
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    }
+
+    // Process Payment Mock
+    function processPayment() {
+        const btn = document.getElementById('btn-pay');
+        const originalContent = btn.innerHTML;
+        
+        // Loading State
+        btn.innerHTML = "<i class='bx bx-loader-alt bx-spin text-xl'></i> Memproses...";
+        btn.setAttribute('disabled', 'true');
+
+        // Simulate API Call
+        setTimeout(() => {
+            document.getElementById('success-modal').classList.remove('hidden');
+            btn.innerHTML = originalContent;
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
